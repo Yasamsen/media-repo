@@ -1,34 +1,30 @@
-Yasam CDN
+✨ Yasam CDN
 
-Minimalist, high-availability media CDN built on top of GitHub raw delivery.
-Designed for fast distribution of images and videos with a simple, predictable structure.
-
----
-
-Overview
-
-Yasam CDN provides a lightweight approach to serving static media assets using GitHub as the storage layer and global delivery backbone.
-
-It is suitable for:
-
-- Frontend applications (web & mobile)
-- Chat bot integrations
-- Static websites & landing pages
-- Media-based APIs
+«High-quality media delivery for images and videos — simple, fast, and reliable.»
 
 ---
 
-Key Characteristics
+🌐 Overview
 
-- Stateless delivery — direct access via raw URLs
-- Structured storage — deterministic file naming
-- Per-folder API — each collection exposes its own JSON index
-- Globally accessible — served through GitHub infrastructure
-- Zero backend required — no server-side runtime
+Yasam CDN is a lightweight content delivery system built on top of GitHub’s raw infrastructure, designed for serving images and videos with minimal latency and zero backend complexity.
+
+It provides a clean and predictable way to access media assets for modern applications.
 
 ---
 
-Repository Layout
+⚡ Core Features
+
+- 🚀 Fast Delivery — direct access via GitHub raw CDN
+- 🖼️ Image Ready — supports JPG, PNG, WEBP
+- 🎥 Video Ready — supports MP4, WEBM, MKV
+- 📁 Structured Storage — organized by collection (folder-based)
+- 🔗 Direct Linking — usable in HTML, apps, and APIs
+- 📄 Per-Folder API — each collection exposes its own JSON endpoint
+- 🌍 Global Access — available worldwide
+
+---
+
+📦 Repository Structure
 
 media-repo/
  ├── <collection>/
@@ -37,27 +33,23 @@ media-repo/
  │    ├── 002.mp4
  │    └── api.json
 
-Each directory represents a logical collection of media.
+Each folder acts as an independent media collection.
 
 ---
 
-Direct Asset Access
+🔗 Direct Access
 
-Image
+🖼️ Image
 
 https://raw.githubusercontent.com/Yasamsen/media-repo/main/<collection>/000.jpg
 
-Video
+🎥 Video
 
 https://raw.githubusercontent.com/Yasamsen/media-repo/main/<collection>/002.mp4
 
-These URLs are publicly accessible and can be embedded directly in applications.
-
 ---
 
-Collection API
-
-Each folder exposes an index:
+📄 API Endpoint
 
 https://raw.githubusercontent.com/Yasamsen/media-repo/main/<collection>/api.json
 
@@ -76,17 +68,7 @@ Response Format
 
 ---
 
-Integration Examples
-
-HTML (Image)
-
-<img src="https://raw.githubusercontent.com/Yasamsen/media-repo/main/fubuki/000.jpg" />
-
-HTML (Video)
-
-<video controls>
-  <source src="https://raw.githubusercontent.com/Yasamsen/media-repo/main/fubuki/002.mp4" type="video/mp4">
-</video>
+💻 Integration
 
 JavaScript
 
@@ -95,68 +77,59 @@ const endpoint = "https://raw.githubusercontent.com/Yasamsen/media-repo/main/fub
 fetch(endpoint)
   .then(res => res.json())
   .then(({ data }) => {
-    console.log(data);
+    const random = data[Math.floor(Math.random() * data.length)];
+    console.log(random);
   });
 
 ---
 
-Performance Notes
+HTML Image
 
-- GitHub raw endpoints are globally cached
-- Suitable for low to medium traffic workloads
-- Latency depends on user proximity to GitHub edge nodes
-- No guaranteed SLA (not a dedicated CDN service)
+<img src="https://raw.githubusercontent.com/Yasamsen/media-repo/main/fubuki/000.jpg" />
 
 ---
 
-Best Practices
+HTML Video
 
-- Use optimized formats:
-  - Images → "webp", "jpg"
-  - Video → "mp4 (H.264)"
-- Keep file sizes reasonable (<5MB recommended)
-- Organize assets by logical grouping (per folder)
-- Avoid frequent overwrites (prefer append-only pattern)
+<video controls>
+  <source src="https://raw.githubusercontent.com/Yasamsen/media-repo/main/fubuki/002.mp4" type="video/mp4">
+</video>
 
 ---
 
-Limitations
+⚙️ Performance
 
-- Rate limiting may apply under heavy usage
-- Not intended for large-scale streaming
-- No signed URLs / access control
-- Public-only access model
-
----
-
-Use Cases
-
-- Media API for bots (WhatsApp / Telegram)
-- Static asset hosting for frontend apps
-- Lightweight image/video CDN
-- Public dataset distribution
+- ⚡ Optimized for lightweight to medium workloads
+- 🌍 Distributed via GitHub global infrastructure
+- 📦 Direct file serving (no redirect layer)
 
 ---
 
-Author
+⚠️ Considerations
+
+- Public access only (no authentication layer)
+- Not intended for large-scale streaming platforms
+- Subject to GitHub rate limits
+
+---
+
+🎯 Use Cases
+
+- 🤖 Media source for bots (WhatsApp / Telegram)
+- 🌐 Static asset hosting
+- 🎌 Anime / image CDN
+- 📱 Mobile app media backend
+
+---
+
+👨‍💻 Author
 
 yasamDev
 
 ---
 
-License
+💎 Final Note
 
-This project uses GitHub as a storage and delivery layer.
-Ensure your content complies with GitHub Terms of Service.
+«Minimal setup. Clean structure. Reliable delivery.»
 
----
-
-Summary
-
-A simple, deterministic approach to serving media:
-
-- predictable structure
-- direct access
-- no infrastructure overhead
-
-«Practical CDN alternative for small to medium-scale projects.»
+A practical CDN solution for developers who value simplicity and control.

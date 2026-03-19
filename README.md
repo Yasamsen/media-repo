@@ -1,213 +1,162 @@
-🚀 Yasam CDN
+Yasam CDN
 
-«Simple • Fast • Auto Media CDN powered by GitHub»
-
-"GitHub repo size" (https://img.shields.io/github/repo-size/Yasamsen/media-repo?color=blue)
-"GitHub stars" (https://img.shields.io/github/stars/Yasamsen/media-repo?style=social)
-"GitHub forks" (https://img.shields.io/github/forks/Yasamsen/media-repo?style=social)
+Minimalist, high-availability media CDN built on top of GitHub raw delivery.
+Designed for fast distribution of images and videos with a simple, predictable structure.
 
 ---
 
-🌐 Overview
+Overview
 
-Yasam CDN adalah sistem CDN sederhana berbasis GitHub yang dirancang untuk:
+Yasam CDN provides a lightweight approach to serving static media assets using GitHub as the storage layer and global delivery backbone.
 
-- 📡 Menyimpan media (image & video)
-- ⚡ Menyediakan API JSON otomatis
-- 🔄 Pipeline otomatis (download → compress → upload → API)
-- 🚀 Performa cepat dengan parallel processing
+It is suitable for:
 
-Cocok untuk:
-
-- Bot WhatsApp 🤖
-- Website gallery 🌐
-- API anime / waifu 🎌
-- Backend ringan ⚡
+- Frontend applications (web & mobile)
+- Chat bot integrations
+- Static websites & landing pages
+- Media-based APIs
 
 ---
 
-🎯 Features
+Key Characteristics
 
-📥 Smart Downloader
-
-- Auto detect semua link dari JSON (nested support)
-- Parallel download (multi-thread)
-- Retry otomatis jika gagal
-- Skip file rusak / kosong
-
----
-
-🗜️ Smart Compressor
-
-- 🖼️ Image: resize + optimize (ImageMagick)
-- 🎥 Video: compress (FFmpeg)
-- Menurunkan size tanpa kehilangan kualitas signifikan
+- Stateless delivery — direct access via raw URLs
+- Structured storage — deterministic file naming
+- Per-folder API — each collection exposes its own JSON index
+- Globally accessible — served through GitHub infrastructure
+- Zero backend required — no server-side runtime
 
 ---
 
-📤 Auto Uploader
-
-- Upload ke GitHub via API
-- Rename otomatis (000, 001, 002...)
-- Anti duplicate & anti overwrite
-- Support image & video
-
----
-
-📄 Auto API Generator
-
-- Generate "api.json" per folder
-- Update otomatis setiap upload
-- Format clean & siap dipakai
-
----
-
-🗑️ Folder Manager
-
-- Delete folder recursive
-- Hapus semua file + api.json
-- Clean tanpa sisa
-
----
-
-⚡ Repository Structure
+Repository Layout
 
 media-repo/
- ├── fubuki/
- │    ├── 000.png
- │    ├── 001.png
- │    └── api.json
- ├── images/
+ ├── <collection>/
  │    ├── 000.jpg
+ │    ├── 001.png
+ │    ├── 002.mp4
  │    └── api.json
 
----
-
-🌐 API Example
-
-Contoh endpoint:
-
-https://raw.githubusercontent.com/Yasamsen/media-repo/main/fubuki/api.json
+Each directory represents a logical collection of media.
 
 ---
 
-📄 API Response
+Direct Asset Access
+
+Image
+
+https://raw.githubusercontent.com/Yasamsen/media-repo/main/<collection>/000.jpg
+
+Video
+
+https://raw.githubusercontent.com/Yasamsen/media-repo/main/<collection>/002.mp4
+
+These URLs are publicly accessible and can be embedded directly in applications.
+
+---
+
+Collection API
+
+Each folder exposes an index:
+
+https://raw.githubusercontent.com/Yasamsen/media-repo/main/<collection>/api.json
+
+Response Format
 
 {
   "status": true,
   "creator": "yasamDev",
-  "total": 5,
+  "total": 3,
   "data": [
     "https://raw.githubusercontent.com/.../000.jpg",
-    "https://raw.githubusercontent.com/.../001.jpg"
+    "https://raw.githubusercontent.com/.../001.png",
+    "https://raw.githubusercontent.com/.../002.mp4"
   ]
 }
 
 ---
 
-⚙️ Installation (Termux)
+Integration Examples
 
-pkg update && pkg upgrade -y
-pkg install jq curl imagemagick ffmpeg util-linux -y
+HTML (Image)
 
----
+<img src="https://raw.githubusercontent.com/Yasamsen/media-repo/main/fubuki/000.jpg" />
 
-🚀 Usage
+HTML (Video)
 
-1️⃣ Download Media dari JSON
+<video controls>
+  <source src="https://raw.githubusercontent.com/Yasamsen/media-repo/main/fubuki/002.mp4" type="video/mp4">
+</video>
 
-./download.sh
+JavaScript
 
----
+const endpoint = "https://raw.githubusercontent.com/Yasamsen/media-repo/main/fubuki/api.json";
 
-2️⃣ Upload ke GitHub
-
-./tool.sh
-
----
-
-3️⃣ Delete Folder
-
-./tool.sh
+fetch(endpoint)
+  .then(res => res.json())
+  .then(({ data }) => {
+    console.log(data);
+  });
 
 ---
 
-🔐 Configuration
+Performance Notes
 
-Edit konfigurasi di script:
-
-TOKEN="your_github_token"
-OWNER="username"
-REPO="repository"
-BRANCH="main"
+- GitHub raw endpoints are globally cached
+- Suitable for low to medium traffic workloads
+- Latency depends on user proximity to GitHub edge nodes
+- No guaranteed SLA (not a dedicated CDN service)
 
 ---
 
-⚡ Performance
+Best Practices
 
-- 🚀 Parallel download (multi-thread)
-- 🧠 Smart filtering & validation
-- 📦 Compression otomatis
-- ⚡ Optimized untuk penggunaan mobile (Termux)
-
----
-
-💡 Use Cases
-
-- CDN anime / waifu image 🎌
-- Backend API bot WhatsApp 🤖
-- Storage gratis berbasis GitHub 💾
-- Web gallery ringan 🌐
-- Media hosting alternatif ⚡
+- Use optimized formats:
+  - Images → "webp", "jpg"
+  - Video → "mp4 (H.264)"
+- Keep file sizes reasonable (<5MB recommended)
+- Organize assets by logical grouping (per folder)
+- Avoid frequent overwrites (prefer append-only pattern)
 
 ---
 
-⚠️ Notes
+Limitations
 
-- Gunakan GitHub Token dengan akses "repo"
-- Hindari thread terlalu besar (rate limit)
-- Gunakan compress sesuai kebutuhan kualitas
-
----
-
-🛠️ Tech Stack
-
-- Bash Script 🖥️
-- jq (JSON Parser)
-- curl (HTTP Client)
-- ImageMagick (Image Processing)
-- FFmpeg (Video Processing)
+- Rate limiting may apply under heavy usage
+- Not intended for large-scale streaming
+- No signed URLs / access control
+- Public-only access model
 
 ---
 
-🔮 Future Plans
+Use Cases
 
-- 🎲 Random API endpoint ("/random")
-- 🌐 Web dashboard (upload UI)
-- 📊 Statistik & monitoring
-- 🧠 Smart AI compression
-- 📁 Multi-repo CDN system
-
----
-
-👨‍💻 Author
-
-Made with ❤️ by yasamDev
+- Media API for bots (WhatsApp / Telegram)
+- Static asset hosting for frontend apps
+- Lightweight image/video CDN
+- Public dataset distribution
 
 ---
 
-⭐ Support
+Author
 
-Kalau project ini membantu:
-
-- ⭐ Star repository
-- 🍴 Fork project
-- 🚀 Share ke teman
+yasamDev
 
 ---
 
-🔥 Final Words
+License
 
-«Build your own CDN with zero cost, full control, and high performance 😳✨»
+This project uses GitHub as a storage and delivery layer.
+Ensure your content complies with GitHub Terms of Service.
 
 ---
+
+Summary
+
+A simple, deterministic approach to serving media:
+
+- predictable structure
+- direct access
+- no infrastructure overhead
+
+«Practical CDN alternative for small to medium-scale projects.»
